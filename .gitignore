@@ -1,0 +1,5 @@
+__update_with_comment.bat
+
+*.packages
+.dart_tool
+pubspec.lock
