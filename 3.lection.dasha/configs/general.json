@@ -1,0 +1,6 @@
+{
+	"numberOfArmies": 2,
+	"armyAttackStrategy": "random",
+	"numberOfSquadsPerArmy": 2,
+	"numberOfUnitsPerSquad": 7
+}
