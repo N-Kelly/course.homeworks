@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:args/args.dart';
 
-import 'utils/defaultExtensions.dart';
+import 'utils/map_format.dart';
 import 'utils/files.dart';
-import 'getSymbolsCount.dart';
+import 'get_symbols_count.dart';
 
 void bindOptionsToFunctions(ArgParser p) {
 	p.addOption('file');
@@ -23,13 +23,13 @@ void main(List<String> args) {
 			final result = getSymbolsCount(
 				getTextFromFile(filePath),
 				isConsiderRegistry
-			).format();
-			print(result);
+			);
+			prettyPrint(result);
 		} else {
 			stdout.write('Please enter text:\n> ');
   			String text = stdin.readLineSync();
-  			final result = getSymbolsCount(text, isConsiderRegistry).format();
-  			print(result);
+  			final result = getSymbolsCount(text, isConsiderRegistry);
+  			prettyPrint(result);
 		}
 	} catch(e) {
 		print('[ERROR]: $e');

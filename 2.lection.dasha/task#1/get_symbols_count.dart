@@ -1,10 +1,10 @@
-import 'utils/defaultExtensions.dart';
+import 'utils/string_extension.dart';
 
 Map<String, int> getSymbolsCount(String text, bool isConsiderRegistry) {
 	Map<String, int> data = <String, int>{};
 
-	String tmpText = !isConsiderRegistry ? text.toLowerCase() : text;
-	final words = tmpText.trim().clearText().getWords();
+	String formatText = isConsiderRegistry ? text : text.toLowerCase();
+	final words = formatText.trim().clearText().getWords();
 	
 	if(words.length < 2)
 		throw('The string is empty or contain only one word!');
