@@ -1,27 +1,40 @@
-import 'dart:math';
-
-import '../utils/defaultExtensions.dart';
-import './Unit.dart';
+import '../utils/map_extensions.dart';
+import '../utils/gavg.dart';
+import 'Unit.dart';
+import 'Soldier.dart';
 
 class Vehicle extends Unit {
-	List<Unit> operators;
+	List<Soldier> operators;
+	Soldier driver;
 
-	Vehicle(this.operators);
-
-	double gavg() => this.operators.fold(0, (acc, operatorEntity) => acc + operatorEntity.attack_success) / this.operators.length;
+	Vehicle(this.operators) {
+		if(operators.length < 1 || operators.length > 3) throw('Ca\'nt create vehicle amount of operator(s) must be between 1 - 3!');
+		this.health += operators.fold(0, (acc, operatorEntity) => acc + operatorEntity.health) / operators.length;
+		this.driver = operators.getRandom();
+	}
 
 	@override 
-	double get attack_success => 0.5 * (1 + this.health / 100) * this.gavg();
+	double get attack_success => 0.5 * (1 + health / 100) * gavg(operators, 'attack_success');
 
 	@override
-	double get damage => 0.1 + this.operators.fold(0, (acc, operatorEntity) => operatorEntity.experience / 100);
+	double get damage => 0.1 + operators.fold(0, (acc, operatorEntity) => operatorEntity.experience / 100);
 
 	@override
 	void bringDamage(double totalDamage) {
-		this.health -= totalDamage * 0.6;
-		this.operators.getRandom().bringDamage(totalDamage * 0.2);
-		this.operators.forEach((operatorEntity) {
-			operatorEntity.bringDamage(totalDamage * 0.2);
-		});
+		health -= totalDamage * 0.6;
+		Map excludedOperator = operators.getRandomWithIndex();
+
+		excludedOperator['item'].bringDamage(totalDamage * 0.2);
+
+		for(int i = 0; i < operators.length; i++) {
+			if(i != excludedOperator['index']) {
+				operators[i].bringDamage(totalDamage * (0.2 / operators.length));
+			}
+		}
+
+		if(!driver.isAlive && health <= 0) {
+			operators.forEach((operatorEntity) => operatorEntity.imedialtlyDie());
+			isAlive = false;
+		}
 	}
 }
