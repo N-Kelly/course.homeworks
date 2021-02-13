@@ -9,12 +9,26 @@ import 'models/Vehicle.dart';
 void startGame() {
 	Battlefield mainBattlefield = Battlefield([
 		Army([
-			Squad([Soldier(), Soldier(), Soldier(), Soldier(), Soldier(), Soldier(), Vehicle([Soldier()])]),
-			Squad([Soldier(), Vehicle([Soldier()]), Vehicle([Soldier()]), Soldier(), Soldier(), Soldier(), Soldier()]),
+			Squad([
+				Soldier(),
+				Soldier(),
+			]),
+			Squad([
+				Soldier(),
+				Soldier(),
+			])
 		]),
 		Army([
-			Squad([Soldier(), Soldier(), Soldier(), Soldier(), Soldier(), Soldier(), Vehicle([Soldier()])]),
-			Squad([Soldier(), Vehicle([Soldier()]), Vehicle([Soldier()]), Soldier(), Soldier(), Soldier(), Soldier()]),
+			Squad([
+				Soldier(),
+				Soldier(),
+			]),
+			Squad([
+				Soldier(),
+				Soldier(),
+			])
 		])
 	]);
+
+	mainBattlefield.startFight();
 }
