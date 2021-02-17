@@ -7,19 +7,25 @@ class Army {
 	List<Squad> squads;
 	String name = generateName();
 
-	List<Squad> get activeSquads => [...squads..where((squad) => squad.isActive)..sort((first, second) => first.totalHealth.compareTo(second.totalHealth))];
+	List<Squad> get activeSquads {
+		List<Squad> currentActiveSquads = squads..where((squad) => squad.isActive);
+		currentActiveSquads.sort((first, second) => first.totalHealth.compareTo(second.totalHealth));
+		return currentActiveSquads;
+	}
+
+	void attackEnemyOnStrategy(Squad ownSquads, Army enemyArmy) {
+		switch(GameRules.armyAttackStrategy) {
+			case 'random': ownSquads.attack(enemyArmy.activeSquads.getRandom()); break;
+			case 'weakest': ownSquads.attack(enemyArmy.activeSquads.first); break;
+			case 'strongest':ownSquads.attack(enemyArmy.activeSquads.last); break;
+			default: ownSquads.attack(enemyArmy.activeSquads.getRandom()); break;
+		}
+	}
 
 	void attackSquad(Army enemyArmy) {
-		if(GameRules.armyAttackStrategy == 'random') {
-			var index = 0;
-			for(Squad ownSquads in activeSquads) {
-				if(enemyArmy.activeSquads.length == 0) break;
-				ownSquads.attack(enemyArmy.activeSquads.getRandom());
-			}
-		} else if(GameRules.armyAttackStrategy == 'weakest') {
-
-		} else if(GameRules.armyAttackStrategy == 'strongest') {
-
+		for(Squad ownSquads in activeSquads) {
+			if(enemyArmy.activeSquads.length == 0) break;
+			attackEnemyOnStrategy(ownSquads, enemyArmy);
 		}
 	}
 
