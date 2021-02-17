@@ -4,14 +4,12 @@ import 'models/waiter.dart';
 import 'models/cook.dart';
 
 void main() {
-	StreamController<Map> ordersStreamController = new StreamController<Map>();
-
 	Cook cook = Cook();
-	Waiter waiter = Waiter(ordersStreamController);
+	Waiter waiter = Waiter();
 	
-	ordersStreamController.add({ 'action': 'doOrder', 'payload': { 'cook': cook, 'dish': 'test' } });
-	Timer(Duration(seconds: 3), () => ordersStreamController.add({ 'action': 'doOrder', 'payload': { 'cook': cook, 'dish': 'test' } }));
-	Timer(Duration(seconds: 5), () => ordersStreamController.add({ 'action': 'doOrder', 'payload': { 'cook': cook, 'dish': 'test' } }));
-	Timer(Duration(seconds: 7), () => ordersStreamController.add({ 'action': 'doOrder', 'payload': { 'cook': cook, 'dish': 'test' } }));
-	ordersStreamController.add({ 'action': 'test' });
+	waiter.doOrder('test1', cook);
+	Timer(Duration(seconds: 3), () => waiter.doOrder('test2', cook));
+	Timer(Duration(seconds: 5), () => waiter.doOrder('test3', cook));
+	Timer(Duration(seconds: 7), () => waiter.doOrder('test4', cook));
+	waiter.doOrder('test5', cook);
 }
