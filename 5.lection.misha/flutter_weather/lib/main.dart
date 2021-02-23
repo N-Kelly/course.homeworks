@@ -2,46 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'components/Home/weather_item.dart';
 import 'weatherData.dart';
 import 'utils/map_extensions.dart';
 import 'utils/random.dart';
 
-WeatherItem createRandomWeatherItem() {
+Map<String, String> createRandomWeatherItem() {
   const List<String> allWeatherType = [WeatherTypes.CLEAR, WeatherTypes.CLOUDY, WeatherTypes.RAINY, WeatherTypes.SNOW, WeatherTypes.THUNDER_STORM];
   const List<String> allCities = ['Kharkiv', 'Kiev', 'Odesa', 'Dnipro', 'Zaporizhzhia', 'Lviv', 'Mykolaiv'];
 
-  print("${allCities.getRandom()}");
-
-  return WeatherItem(
-      allCities.getRandom(),
-      allWeatherType.getRandom(),
-      randomDegree(),
-      randomTime()
-  );
+  return {
+    "city": allCities.getRandom(),
+    "weatherType": allWeatherType.getRandom(),
+    "degree": randomDegree(),
+    "time": randomTime()
+  };
 }
 
 void main() {
-  runApp(MyApp(createRandomWeatherItem()));
+  Map<String, String> options = createRandomWeatherItem();
+  runApp(MyApp(options["city"], options["weatherType"], options["degree"], options["time"]));
 }
 
 class MyApp extends StatefulWidget {
-  final WeatherItem _currentItem;
+  final String _city;
+  final String _weatherType;
+  final String _degree;
+  final String _time;
 
-  MyApp(this._currentItem);
+  MyApp(this._city, this._weatherType, this._degree, this._time);
 
   @override
-  MyAppState createState() => MyAppState(_currentItem);
+  MyAppState createState() => MyAppState(this._city, this._weatherType, this._degree, this._time);
 }
 
 class MyAppState extends State<MyApp> {
-  WeatherItem currentItem;
+  String city;
+  String weatherType;
+  String degree;
+  String time;
 
-  MyAppState(this.currentItem);
+  MyAppState(this.city, this.weatherType, this.degree, this.time);
 
   void changeWeatherItem() {
     setState(() {
-      currentItem = createRandomWeatherItem();
+      Map<String, String> options = createRandomWeatherItem();
+      city = options["city"];
+      weatherType = options["weatherType"];
+      degree = options["degree"];
+      time = options["time"];
     });
   }
 
@@ -89,7 +97,32 @@ class MyAppState extends State<MyApp> {
                     ]
                 ),
               ),
-              child: currentItem,
+              child: Column(
+                  children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(top: 60, bottom: 25),
+                        child:  Image.asset('assets/images/weather_types/$weatherType.png', scale: 0.8)
+                    ),
+                    Text(
+                        '$city',
+                        style: TextStyle(fontFamily: 'RedHatDisplayRegular', fontSize: 42)
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text(
+                          '$degree ℃',
+                          style: TextStyle(fontFamily: 'RedHatDisplayMedium', fontSize: 42)
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: Text(
+                          'Last Updated at $time',
+                          style: TextStyle(fontFamily: 'RedHatDisplayRegular', fontSize: 16)
+                      ),
+                    )
+                  ]
+              ),
               constraints: BoxConstraints.expand(),
             ),
             floatingActionButton: Padding(
