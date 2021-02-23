@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'map_extensions.dart';
+import '../weatherData.dart';
+
 int randomInt({ int min = 0, int max }) {
 	return min + Random().nextInt(max - min);
 }
@@ -18,4 +21,16 @@ String randomTime() {
 	String meridiem = "${randomNumber < 12 ? 'AM' : 'PM'}" ;
 
 	return "$hour:$minutes $meridiem";
+}
+
+Map<String, String> createRandomWeatherItem() {
+	const List<String> allWeatherType = [WeatherTypes.CLEAR, WeatherTypes.CLOUDY, WeatherTypes.RAINY, WeatherTypes.SNOW, WeatherTypes.THUNDER_STORM];
+	const List<String> allCities = ['Kharkiv', 'Kiev', 'Odesa', 'Dnipro', 'Zaporizhzhia', 'Lviv', 'Mykolaiv'];
+
+	return {
+		"city": allCities.getRandom(),
+		"weatherType": allWeatherType.getRandom(),
+		"degree": randomDegree(),
+		"time": randomTime()
+	};
 }
