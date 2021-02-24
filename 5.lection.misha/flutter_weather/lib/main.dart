@@ -86,7 +86,7 @@ class MyAppState extends State<MyApp> {
                     SizedBox(height: 25),
                     Text(
                         '$city',
-                        style: TextStyle(fontFamily: 'RedHatDisplayRegular', fontSize: 42)
+                        style: TextStyle(fontSize: 42)
                     ),
                     SizedBox(height: 10),
                     Text(
@@ -96,7 +96,7 @@ class MyAppState extends State<MyApp> {
                     SizedBox(height: 5),
                     Text(
                         'Last Updated at $time',
-                        style: TextStyle(fontFamily: 'RedHatDisplayRegular', fontSize: 16)
+                        style: TextStyle(fontSize: 16)
                     )
                   ]
               ),
