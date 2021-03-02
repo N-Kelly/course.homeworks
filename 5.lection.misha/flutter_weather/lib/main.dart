@@ -3,6 +3,25 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'utils/random.dart';
+import 'utils/map_extensions.dart';
+import 'components/weatherItem.dart';
+import 'weatherData.dart';
+
+WeatherItem createRandomWeatherItem() {
+  const List<String> allWeatherType = [WeatherTypes.CLEAR, WeatherTypes.CLOUDY, WeatherTypes.RAINY, WeatherTypes.SNOW, WeatherTypes.THUNDER_STORM];
+  const List<String> allCities = ['Kharkiv', 'Kiev', 'Odesa', 'Dnipro', 'Zaporizhzhia', 'Lviv', 'Mykolaiv'];
+
+  WeatherItem newRandomWeatherItem = WeatherItem(
+      allCities.getRandom(),
+      allWeatherType.getRandom(),
+      randomDegree(),
+      randomTime()
+  );
+
+  newRandomWeatherItem.printPretty();
+
+  return newRandomWeatherItem;
+}
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -20,17 +39,10 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  String city;
-  String weatherType;
-  String degree;
-  String time;
+  WeatherItem currentItem;
 
   void _setRandomItem() {
-    Map<String, String> options = createRandomWeatherItem();
-    city = options["city"];
-    weatherType = options["weatherType"];
-    degree = options["degree"];
-    time = options["time"];
+    currentItem = createRandomWeatherItem();
   }
 
   @override
@@ -79,27 +91,7 @@ class MyAppState extends State<MyApp> {
                     ]
                 ),
               ),
-              child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 60),
-                    Image.asset('assets/images/weather_types/$weatherType.png', scale: 0.8),
-                    SizedBox(height: 25),
-                    Text(
-                        '$city',
-                        style: TextStyle(fontSize: 42)
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                        '$degree ℃',
-                        style: TextStyle(fontFamily: 'RedHatDisplayMedium', fontSize: 42)
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                        'Last Updated at $time',
-                        style: TextStyle(fontSize: 16)
-                    )
-                  ]
-              ),
+              child: currentItem,
               constraints: BoxConstraints.expand(),
             ),
             floatingActionButton: Padding(
