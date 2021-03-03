@@ -6,7 +6,7 @@ class InputData extends StatelessWidget {
   final bool isSecure;
   final TextEditingController currentController;
 
-  InputData({ this.hintText, this.validateFunction, this.isSecure, this.currentController });
+  InputData({ @required this.hintText, @required this.validateFunction, this.isSecure, @required this.currentController });
 
   @override
   Widget build(BuildContext context) {
