@@ -1,36 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class WeatherItem extends StatefulWidget {
-  final String _city;
-  final String _iconType;
-  final String _degree;
-  final String _date;
-
-  WeatherItem(this._city, this._iconType, this._degree, this._date);
-
-  void printPretty() {
-    print('========= Weather item =========');
-    print('city => $_city');
-    print('iconType => $_iconType');
-    print('degree => $_degree');
-    print('date => $_date');
-    print('================================');
-  }
-
-  @override
-  WeatherItemState createState() => WeatherItemState(_city, _iconType, _degree, _date);
-}
-
-class WeatherItemState extends State<WeatherItem> {
+class WeatherItem extends StatelessWidget {
   final String city;
   final String iconType;
   final String degree;
   final String date;
 
-  WeatherItemState(this.city, this.iconType, this.degree, this.date);
-
-
+  WeatherItem(this.city, this.iconType, this.degree, this.date);
 
   @override
   Widget build(BuildContext context) {
@@ -61,4 +38,13 @@ class WeatherItemState extends State<WeatherItem> {
         ]
     );
   }
+  void printPretty() {
+    print('========= Weather item =========');
+    print('city => $city');
+    print('iconType => $iconType');
+    print('degree => $degree');
+    print('date => $date');
+    print('================================');
+  }
+
 }

@@ -12,8 +12,8 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   final Map<String, TextEditingController> _formControllers = {
-    "email": new TextEditingController(),
-    "password": new TextEditingController(),
+    "email": TextEditingController(),
+    "password": TextEditingController(),
   };
 
   @override

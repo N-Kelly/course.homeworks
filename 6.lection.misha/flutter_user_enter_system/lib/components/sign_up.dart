@@ -12,11 +12,11 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   final Map<String, TextEditingController> _formControllers = {
-    "name": new TextEditingController(),
-    "email": new TextEditingController(),
-    "phoneNumber": new TextEditingController(),
-    "password": new TextEditingController(),
-    "rePassword": new TextEditingController()
+    "name": TextEditingController(),
+    "email": TextEditingController(),
+    "phoneNumber": TextEditingController(),
+    "password": TextEditingController(),
+    "rePassword": TextEditingController()
   };
 
   @override
