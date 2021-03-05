@@ -32,13 +32,16 @@ class Storage {
     currentUserData = userData;
   }
 
-  Future<bool> initStorage() async {
+  Future<Map> initStorage() async {
     _preferences = await SharedPreferences.getInstance();
     bool isUserDataExists = _preferences.containsKey('userData');
     bool isUserAuthExists = _preferences.containsKey('isUserAuth');
     currentUserData = isUserDataExists ? json.decode(_preferences.getString('userData')) : null;
     isUserAuth = isUserAuthExists ? _preferences.getBool('isUserAuth') : false;
-    return isUserAuth;
+    return {
+      "currentUserData": currentUserData,
+      "isUserAuth": isUserAuth
+    };
   }
 
   Storage._internal();

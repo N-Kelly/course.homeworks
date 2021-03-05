@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Storage.dart';
+import '../storage.dart';
 import '../components/default_button.dart';
 import '../components/confirm_action_alert.dart';
 import '../default_theme.dart';
@@ -41,7 +41,7 @@ class Content extends StatelessWidget {
                           title: 'Are you sure that you want to delete your account?',
                           onActionConfirm: () {
                             Storage().removeUserData();
-                            Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+                            Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false );
                           },
                         ),
                       ),

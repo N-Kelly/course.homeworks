@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Storage.dart';
+import '../storage.dart';
 import '../default_theme.dart';
 import '../validators/enter_system.validators.dart';
 import '../components/input_data.dart';
