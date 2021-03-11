@@ -4,7 +4,6 @@ import '../components/default_button.dart';
 import '../default_theme.dart';
 
 class Homepage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

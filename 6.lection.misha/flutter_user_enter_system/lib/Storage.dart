@@ -15,7 +15,6 @@ class Storage {
 
   void saveUserData(Map<String, TextEditingController> userData) {
     String result = convertFormControllersToString(userData);
-    print(result);
     _preferences.setString('userData', result);
   }
 
