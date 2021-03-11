@@ -1,0 +1,42 @@
+name: flutter_weather_with_api
+description: Flutter weather with api.
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  cupertino_icons: ^1.0.0
+  http: ^0.12.2
+  json_annotation: 3.1.0
+  provider: ^4.3.3
+  location: ^3.0.0
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^1.7.1
+  json_serializable: ^3.5.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/images/weather_types/
+  fonts:
+    - family: RedHatDisplayRegular
+      fonts:
+        - asset: assets/fonts/RedHatDisplay/Regular.ttf
+          weight: 400
+    - family: RedHatDisplayMedium
+      fonts:
+        - asset: assets/fonts/RedHatDisplay/Medium.ttf
+          weight: 500
+    - family: RedHatDisplayBold
+      fonts:
+        - asset: assets/fonts/RedHatDisplay/Bold.ttf
+          weight: 700

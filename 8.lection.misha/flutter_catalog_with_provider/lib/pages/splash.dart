@@ -19,7 +19,7 @@ class Splash extends StatelessWidget {
       home: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-          body:  Column(
+          body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Center(
