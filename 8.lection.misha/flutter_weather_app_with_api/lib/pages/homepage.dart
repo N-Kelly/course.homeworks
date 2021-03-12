@@ -28,9 +28,11 @@ class Homepage extends StatelessWidget {
           actions: <Widget>[
             IconButton(
               color: Color(0xFFFFFFFF),
-              icon: Icon(Icons.location_searching),
+              icon: Icon(Icons.my_location_outlined),
               onPressed: () {
-                context.read<WeatherCityModel>().changeCityName('myOwnPosition');
+                context
+                    .read<WeatherCityModel>()
+                    .changeCityName('myOwnPosition');
                 Navigator.of(context).pushNamed('/more-detail-weather');
               },
             ),
@@ -60,22 +62,20 @@ class Homepage extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            SizedBox(width: 15),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              width: 246,
-                              height: 66,
-                              child: Text(
-                                CITIES[i],
-                                style: new TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                ),
+                        SizedBox(width: 15),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            width: 246,
+                            height: 66,
+                            child: Text(
+                              CITIES[i],
+                              style: new TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
                               ),
                             ),
-                          ],
+                          ),
                         ),
                         Transform.rotate(
                           angle: -90 * 3.14 / 180,
@@ -85,8 +85,11 @@ class Homepage extends StatelessWidget {
                               Icons.arrow_circle_down,
                             ),
                             onPressed: () {
-                              context.read<WeatherCityModel>().changeCityName(CITIES[i]);
-                              Navigator.of(context).pushNamed('/more-detail-weather');
+                              context
+                                  .read<WeatherCityModel>()
+                                  .changeCityName(CITIES[i]);
+                              Navigator.of(context)
+                                  .pushNamed('/more-detail-weather');
                             },
                           ),
                         ),

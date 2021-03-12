@@ -7,8 +7,9 @@ import 'package:http/http.dart' as http;
 import '../utils/get_user_location.dart';
 import '../components/weather_item.dart';
 import '../constants.dart';
-import '../models/WeatherCity.dart';
+import '../models/WeatherCity/WeatherCity.dart';
 import '../providers/WeatherCity.dart';
+import '../components/loader.dart';
 
 class MoreDetailWeatherInCity extends StatefulWidget {
   MoreDetailWeatherInCity({Key key}) : super(key: key);
@@ -56,110 +57,67 @@ class _MoreDetailWeatherInCityState extends State<MoreDetailWeatherInCity> {
                 end: Alignment.bottomCenter,
                 colors: [Color(0xFF40C4FF), Color(0xFF9AE0FF)]),
           ),
-          child: isMyOwnCity ? getWeatherInMyOwnCityBuilder(context) : getWeatherByCityNameBuilder(cityName),
+          child: FutureBuilder(
+            future: getWeatherByCity(isMyOwnCity, context, cityName: cityName),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data != null) {
+                  final WeatherCity data = snapshot.data;
+
+                  final String iconType = data.weather[0].main;
+                  final double degree = data.main.temp;
+                  final int date = data.dt;
+
+                  return WeatherItem(iconType, degree, date);
+                }
+              }
+
+              if (snapshot.hasError) {
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 60,
+                    ),
+                    Icon(
+                      Icons.new_releases_outlined,
+                      size: 80,
+                    ),
+                    Text(
+                      'Something went wrong :(',
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
+                );
+              }
+
+              return Loader();
+            },
+          ),
           constraints: BoxConstraints.expand(),
         ),
       ),
     );
   }
 
-  FutureBuilder getWeatherInMyOwnCityBuilder(context) {
-    return FutureBuilder(
-      future: getWeatherInMyOwnCityRequest(context),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if(snapshot.data != null) {
-            final String iconType = snapshot.data.iconType;
-            final double degree = snapshot.data.degree;
-            final int date = snapshot.data.date;
-
-            return WeatherItem(iconType, degree, date);
-          } else {
-            return Container();
-          }
-        }
-
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Center(
-              child: Transform.scale(
-                scale: 2.5,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Color(0xFF141C22),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future getWeatherInMyOwnCityRequest(context) async {
+  Future getWeatherByCity(isOwnCity, context, {cityName}) async {
     await Future.delayed(Duration(seconds: 2));
 
-    Map userLocationData = await getUserLocation();
-
-    if(userLocationData != null) {
-      var response = await http.get("http://api.openweathermap.org/data/2.5/weather?lat=${userLocationData['lat']}&lon=${userLocationData['long']}&appid=${App.API_KEY}");
-      Map responseObject = jsonDecode(response.body);
-
-      return WeatherCity.fromJson({
-        'iconType': responseObject['weather'][0]['main'],
-        'date': responseObject['dt'],
-        'degree': responseObject['main']['temp']
-      });
-    } else {
-      Navigator.of(context).pop();
-      return null;
+    Map userLocationData;
+    if (isOwnCity) {
+      userLocationData = await getUserLocation();
+      if (userLocationData == null) {
+        Navigator.of(context).pop();
+        return null;
+      }
     }
-  }
 
-  FutureBuilder getWeatherByCityNameBuilder(cityName) {
-    return FutureBuilder(
-      future: getWeatherByCityNameRequest(cityName),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final String iconType = snapshot.data.iconType;
-          final double degree = snapshot.data.degree;
-          final int date = snapshot.data.date;
+    var response = await http.get(isOwnCity
+        ? "http://api.openweathermap.org/data/2.5/weather?lat=${userLocationData['lat']}&lon=${userLocationData['long']}&appid=${App.API_KEY}"
+        : 'http://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=${App.API_KEY}');
 
-          return WeatherItem(iconType, degree, date);
-        }
-
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Center(
-              child: Transform.scale(
-                scale: 2.5,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Color(0xFF141C22),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<WeatherCity> getWeatherByCityNameRequest(cityName) async {
-    await Future.delayed(Duration(seconds: 2));
-
-    var response = await http.get(
-        'http://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=${App.API_KEY}');
-    Map responseObject = jsonDecode(response.body);
-
-    return WeatherCity.fromJson({
-      'iconType': responseObject['weather'][0]['main'],
-      'date': responseObject['dt'],
-      'degree': responseObject['main']['temp']
-    });
+    return WeatherCity.fromJson(jsonDecode(response.body));
   }
 }

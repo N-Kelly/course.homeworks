@@ -46,33 +46,34 @@ class Content extends StatelessWidget {
                   SizedBox(
                     height: 80,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            Container(
-                              width: 66,
-                              height: 66,
-                              color: PRODUCTS[i]['color'],
-                            ),
-                            SizedBox(width: 15),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              width: 180,
-                              height: 66,
-                              child: Text(
-                                PRODUCTS[i]['name'],
-                                style: new TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 18,
-                                ),
+                        Container(
+                          width: 66,
+                          height: 66,
+                          color: PRODUCTS[i]['color'],
+                        ),
+                        SizedBox(width: 15),
+                        Expanded(
+                          child: Container(
+                            color: Colors.red,
+                            alignment: Alignment.centerLeft,
+                            height: 66,
+                            child: Text(
+                              PRODUCTS[i]['name'],
+                              style: new TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
                               ),
                             ),
-                          ],
+                          ),
                         ),
                         AddProductionToCardButton(
-                          onOrder: () => context.read<ProductModel>().add(PRODUCTS[i]['id']),
-                          onCancelOrder: () => context.read<ProductModel>().remove(PRODUCTS[i]['id']),
+                          onOrder: () => context
+                              .read<ProductModel>()
+                              .add(PRODUCTS[i]['id']),
+                          onCancelOrder: () => context
+                              .read<ProductModel>()
+                              .remove(PRODUCTS[i]['id']),
                         ),
                       ],
                     ),
